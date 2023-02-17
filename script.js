@@ -1,20 +1,21 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser')
+function letterCombinations(input_digit) {
+  if (!input_digit.length) return [];
 
-const app = express();
+  const mapping = ['0', '1', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz'];
+  let result = [''];
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+  for (const digit of input_digit) {
+    const letters = mapping[digit];
+    const temp = [];
+    for (const res of result) {
+      for (const letter of letters) {
+        temp.push(res + letter);
+      }
+    }
+    result = temp;
+  }
 
-const letterCombination = require('./script');
+  return result;
+}
 
-app.use(express.static(__dirname))
-
-app.post('/lettercomb',(req, res) => {
-  const input = req.body.num
-  const answer = letterCombination(input) 
-  res.send({message:JSON.stringify(answer)})
-})
-
-module.exports = app;
+module.exports = letterCombinations;
